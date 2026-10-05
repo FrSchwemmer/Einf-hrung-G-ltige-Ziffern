@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geltende Ziffern & Potenzielle Energie - Physik Kl. 9</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary: #0d9488;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --correct: #16a34a;
+            --incorrect: #dc2626;
+            --red-alert-bg: #fef2f2;
+            --red-alert-border: #ef4444;
+            --red-alert-text: #991b1b;
+            --blue-info-bg: #eff6ff;
+            --blue-info-border: #3b82f6;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--bg);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 30px 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 { margin: 0 0 10px 0; font-size: 1.8rem; }
+        .subtitle { opacity: 0.9; font-size: 1rem; margin: 0; }
+
+        section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+
+        .discovery-box {
+            background-color: #f0f9ff;
+            border-left: 4px solid var(--primary-light);
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .rule-card-red {
+            background: var(--red-alert-bg);
+            border: 2px solid var(--red-alert-border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);
+        }
+
+        .rule-card-red h3 {
+            margin-top: 0;
+            color: var(--red-alert-text);
+            font-size: 1.2rem;
+            border-bottom: 1px solid #fca5a5;
+            padding-bottom: 6px;
+        }
+
+        .info-card-blue {
+            background: var(--blue-info-bg);
+            border: 2px solid var(--blue-info-border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .info-card-blue h3 {
+            margin-top: 0;
+            color: #1e40af;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #93c5fd;
+            padding-bottom: 6px;
+        }
+
+        .task {
+            background: #fafafa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .task-title {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+        }
+
+        input[type="text"] {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 1rem;
+            width: 140px;
+            margin-right: 10px;
+        }
+
+        button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #0f766e;
+        }
+
+        .feedback {
+            margin-top: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .feedback.correct { color: var(--correct); }
+        .feedback.incorrect { color: var(--incorrect); }
+
+        .hint-btn {
+            background: none;
+            border: none;
+            color: #64748b;
+            text-decoration: underline;
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 0;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        .hint-text {
+            display: none;
+            font-size: 0.9rem;
+            color: #475569;
+            background: #f1f5f9;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-top: 5px;
+        }
+
+        .formula-box {
+            text-align: center;
+            background: #fffbe3;
+            border: 1px solid #fef08a;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .rule-summary {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        ol, ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+
+        /* Stilvolle Darstellung für physikalische Formeln und Einheiten */
+        .math-expr {
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+        }
+        .unit {
+            font-family: system-ui, sans-serif;
+            font-style: normal;
+        }
+        .code-val {
+            background-color: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Physik 9. Klasse – Gymnasium Bayern</h1>
+        <p class="subtitle">Selbstlern-Einheit: Geltende Ziffern & Potenzielle Energie</p>
+    </header>
+
+    <!-- TEIL 1: ENTDECKUNG -->
+    <section>
+        <h2>Teil 1: Das Problem der Messgenauigkeit (Entdeckungsphase)</h2>
+        
+        <p>Stell dir vor, du misst in einem Experiment zur potenziellen Energie die Höhe <span class="math-expr">h</span> eines Körpers mit einem normalen Schullineal und erhältst:</p>
+        
+        <div class="discovery-box">
+            <p><strong>Höhe:</strong> <span class="math-expr">h</span> = 0,42 <span class="unit">m</span> &nbsp;&nbsp;&nbsp;&nbsp; <em>(2 geltende Ziffern)</em></p>
+            <p>Die Masse misst du mit einer Präzisionswaage:</p>
+            <p><strong>Masse:</strong> <span class="math-expr">m</span> = 1,2537 <span class="unit">kg</span> &nbsp;&nbsp;&nbsp;&nbsp; <em>(5 geltende Ziffern)</em></p>
+            <p>Für die Fallbeschleunigung nutzen wir: <span class="math-expr">g</span> = 9,81 <span class="unit">m/s²</span> &nbsp;&nbsp;&nbsp;&nbsp; <em>(3 geltende Ziffern)</em></p>
+        </div>
+
+        <p>Nun berechnest du die potenzielle Energie <span class="math-expr">E</span><sub>pot</sub> = <span class="math-expr">m</span> · <span class="math-expr">g</span> · <span class="math-expr">h</span> mit dem Taschenrechner:</p>
+        <p><strong>Taschenrechner-Anzeige:</strong> <code class="code-val">5.16836835 J</code></p>
+
+        <div class="task">
+            <div class="task-title">Denkaufgabe:</div>
+            <p>Ist es physikalisch sinnvoll, das Ergebnis mit 8 Nachkommastellen anzugeben, obwohl die Höhe nur auf 2 Millimeter genau gemessen werden konnte?</p>
+            <button onclick="toggleHint('think1')">Antwort anzeigen / vergleichen</button>
+            <div id="think1" class="hint-text">
+                <strong>Nein!</strong> Ein Rechenergebnis kann niemals genauer sein als die ungenaueste Messung, die in die Rechnung eingegangen ist. Das Taschenrechner-Ergebnis täuscht eine Präzision vor, die in Wirklichkeit gar nicht existiert.
+            </div>
+        </div>
+
+        <div class="rule-summary">
+            <h3>Grundregel:</h3>
+            <p><strong>Beim Multiplizieren und Dividieren gilt:</strong> Das Endergebnis darf nicht mehr geltende Ziffern haben als die Messgröße mit den wenigsten geltenden Ziffern.</p>
+            <p style="margin-top: 10px; color: #15803d; font-weight: 500;">
+                (Anmerkung: Die "geltenden Ziffern" werden auch als <em>signifikante Stellen</em> bezeichnet.)
+            </p>
+        </div>
+    </section>
+
+    <!-- TEIL 2: REGELN FÜR GELTENDE ZIFFERN -->
+    <section>
+        <h2>Teil 2: Wie zählt man geltende Ziffern?</h2>
+        
+        <p>Damit du die Genauigkeit deiner Messwerte richtig einschätzen kannst, gelten folgende Regeln:</p>
+        
+        <div class="rule-card-red">
+            <h3>MERKBOX: Regeln für geltende Ziffern</h3>
+            <ol>
+                <li><strong>Ziffern von 1 bis 9</strong> zählen immer als geltend.</li>
+                <li><strong>Nullen zwischen anderen Ziffern</strong> zählen mit (z. B. <span class="code-val">105 m</span> &rarr; 3 Ziffern).</li>
+                <li><strong>Nullen links von der ersten Ziffer ungleich 0</strong> zählen <em>nicht</em> als geltend. Sie sind nur Platzhalter (z. B. <span class="code-val">0,0042 m</span> &rarr; 2 Ziffern).</li>
+                <li><strong>Nullen am Ende nach dem Komma</strong> zählen mit, da sie die Messpräzision ausdrücken (z. B. <span class="code-val">2,50 m</span> &rarr; 3 Ziffern).</li>
+            </ol>
+        </div>
+
+        <!-- METHODEN ZUR DARSTELLUNG -->
+        <div class="info-card-blue">
+            <h3>MERKBOX: Geltende Ziffern eindeutig darstellen</h3>
+            <p>Manchmal ist die Anzahl geltender Ziffern bei großen Zahlen unklar (z. B. ist bei <span class="code-val">120 m</span> oft nicht eindeutig, ob die Endnull mitzählt). Um Missverständnisse zu vermeiden oder die Zahl auf weniger geltende Ziffern anzupassen, gibt es zwei Methoden:</p>
+            
+            <ul>
+                <li>
+                    <strong>1. Methode: Einheitenwechsel (Präfixe nutzen)</strong><br>
+                    Durch den Wechsel zu einer größeren Einheit entstehen Platzhalter-Nullen als Führe-Nullen, sodass nur die gewünschten Ziffern geltend bleiben.<br>
+                    <em>Beispiel:</em> <span class="code-val">120 m</span> auf 2 geltende Ziffern festlegen &rarr; <span class="code-val">0,12 km</span> (denn führende Nullen zählen nicht!).
+                </li>
+                <li style="margin-top: 10px;">
+                    <strong>2. Methode: Wissenschaftliche Schreibweise (Zehnerpotenzen)</strong><br>
+                    Alle geltenden Ziffern werden vor der Zehnerpotenz angegeben (genau eine Ziffer vor dem Komma). So kann man eine Zahl mit vielen Ziffern ganz einfach auf weniger geltende Ziffern runden.<br>
+                    <em>Beispiele:</em>
+                    <ul>
+                        <li><span class="code-val">120 m</span> auf 2 Ziffern &rarr; <span class="code-val">1,2 · 10² m</span></li>
+                        <li><span class="code-val">12537 m</span> (5 Ziffern) auf 3 Ziffern runden &rarr; <span class="code-val">1,25 · 10⁴ m</span></li>
+                        <li><span class="code-val">88290 J</span> (4 Ziffern) auf 2 Ziffern runden &rarr; <span class="code-val">8,8 · 10⁴ J</span></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <br>
+        <p><strong>Anwendungsbeispiel für unser Einstiegsbeispiel:</strong></p>
+        <ul>
+            <li><span class="math-expr">h</span> = 0,42 <span class="unit">m</span> hat <strong>2 geltende Ziffern</strong> (Engpass der Genauigkeit!).</li>
+            <li>Das Ergebnis <code class="code-val">5.16836835 J</code> muss daher auf <strong>2 geltende Ziffern</strong> gerundet werden.</li>
+            <li>Richtiges Endergebnis: <strong><span class="math-expr">E</span><sub>pot</sub> = 5,2 <span class="unit">J</span></strong></li>
+        </ul>
+    </section>
+
+    <!-- TEIL 3: ZWISCHENÜBUNG GELTENDE ZIFFERN -->
+    <section>
+        <h2>Teil 3: Zwischenübung – Zählen der geltenden Ziffern</h2>
+        <p>Gib für die folgenden physikalischen Größen jeweils die Anzahl der geltenden Ziffern an:</p>
+
+        <div class="task">
+            <div class="input-group">
+                <p><strong>a)</strong> <span class="math-expr">s</span> = 0,0502 <span class="unit">m</span></p>
+                <input type="text" id="z_a" placeholder="Anzahl Ziffern">
+                <button onclick="checkDigits('z_a', 'f_z_a', '3', 'Richtig! Die führenden Nullen zählen nicht, die Null zwischen 5 und 2 zählt mit.')">Prüfen</button>
+                <div id="f_z_a" class="feedback"></div>
+            </div>
+
+            <div class="input-group">
+                <p><strong>b)</strong> <span class="math-expr">m</span> = 4,300 <span class="unit">kg</span></p>
+                <input type="text" id="z_b" placeholder="Anzahl Ziffern">
+                <button onclick="checkDigits('z_b', 'f_z_b', '4', 'Richtig! Endnullen nach dem Komma zählen mit (4 Ziffern).')">Prüfen</button>
+                <div id="f_z_b" class="feedback"></div>
+            </div>
+
+            <div class="input-group">
+                <p><strong>c)</strong> <span class="math-expr">t</span> = 12,05 <span class="unit">s</span></p>
+                <input type="text" id="z_c" placeholder="Anzahl Ziffern">
+                <button onclick="checkDigits('z_c', 'f_z_c', '4', 'Richtig! Alle Ziffern inklusive der eingeschlossenen Null zählen.')">Prüfen</button>
+                <div id="f_z_c" class="feedback"></div>
+            </div>
+
+            <div class="input-group">
+                <p><strong>d)</strong> <span class="math-expr">V</span> = 0,007 <span class="unit">m³</span></p>
+                <input type="text" id="z_d" placeholder="Anzahl Ziffern">
+                <button onclick="checkDigits('z_d', 'f_z_d', '1', 'Richtig! Führende Nullen sind nur Platzhalter. Nur die 7 zählt (1 Ziffer).')">Prüfen</button>
+                <div id="f_z_d" class="feedback"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEIL 4: ÜBUNGSAUFGABEN POTENZIELLE ENERGIE -->
+    <section>
+        <h2>Teil 4: Übungsaufgaben zur potenziellen Energie</h2>
+        
+        <div class="formula-box">
+            Formel: <span class="math-expr">E</span><sub>pot</sub> = <span class="math-expr">m</span> · <span class="math-expr">g</span> · <span class="math-expr">h</span> &nbsp;&nbsp;|&nbsp;&nbsp; Fallbeschleunigung: <span class="math-expr">g</span> = 9,81 <span class="unit">m/s²</span>
+        </div>
+
+        <!-- AUFGABE 1 -->
+        <div class="task">
+            <div class="task-title">Aufgabe 1: Wandern im Altmühltal</div>
+            <p>Ein Wanderer (<span class="math-expr">m</span> = 75 <span class="unit">kg</span>) steigt auf einen Aussichtspunkt, der <span class="math-expr">h</span> = 120 <span class="unit">m</span> höher liegt.</p>
+            
+            <p><strong>1.1) Gib die Anzahl der geltenden Ziffern der einzelnen Messwerte an:</strong></p>
+            
+            <div class="input-group">
+                <label for="q1_m_digits">Geltende Ziffern von <span class="math-expr">m</span> = 75 <span class="unit">kg</span>:</label><br>
+                <input type="text" id="q1_m_digits" placeholder="z. B. 2">
+                <button onclick="checkDigits('q1_m_digits', 'f1_m_digits', '2', 'Richtig! 75 besteht aus zwei geltenden Ziffern.')">Prüfen</button>
+                <div id="f1_m_digits" class="feedback"></div>
+            </div>
+
+            <div class="input-group">
+                <label for="q1_g_digits">Geltende Ziffern von <span class="math-expr">g</span> = 9,81 <span class="unit">m/s²</span>:</label><br>
+                <input type="text" id="q1_g_digits" placeholder="z. B. 3">
+                <button onclick="checkDigits('q1_g_digits', 'f1_g_digits', '3', 'Richtig! 9,81 besteht aus drei geltenden Ziffern.')">Prüfen</button>
+                <div id="f1_g_digits" class="feedback"></div>
+            </div>
+
+            <div class="input-group">
+                <label for="q1_h_digits">Geltende Ziffern von <span class="math-expr">h</span> = 120 <span class="unit">m</span> (Standardannahme):</label><br>
+                <input type="text" id="q1_h_digits" placeholder="z. B. 2">
+                <button onclick="checkDigits('q1_h_digits', 'f1_h_digits', '2', 'Richtig! Ohne Komma/Zehnerpotenz geht man üblicherweise von 2 geltenden Ziffern aus.')">Prüfen</button>
+                <div id="f1_h_digits" class="feedback"></div>
+            </div>
+
+            <br>
+            <p><strong>1.2) Berechne die potenzielle Energie <span class="math-expr">E</span><sub>pot</sub>:</strong></p>
+            
+            <div class="input-group">
+                <label for="q1_digits">Wie viele geltende Ziffern muss das Endergebnis haben?</label><br>
+                <input type="text" id="q1_digits" placeholder="z. B. 2">
+                <button onclick="checkTask1Digits()">Prüfen</button>
+                <div id="f1_digits" class="feedback"></div>
+            </div>
+
+            <div class="input-group">
+                <label for="q1_val">Endergebnis <span class="math-expr">E</span><sub>pot</sub> in kJ (Kilojoule):</label><br>
+                <input type="text" id="q1_val" placeholder="z. B. 88">
+                <button onclick="checkTask1Val()">Prüfen</button>
+                <div id="f1_val" class="feedback"></div>
+            </div>
+
+            <button class="hint-btn" onclick="toggleHint('h1')">Hinweis anzeigen</button>
+            <div id="h1" class="hint-text">
+                TR-Wert: 75 · 9,81 · 120 = 88290 <span class="unit">J</span> = 88,29 <span class="unit">kJ</span>.<br>
+                Beachte: Die Engpässe sind m (2 Ziffern) und h (2 Ziffern). Das Ergebnis muss auf 2 geltende Ziffern gerundet werden (88 kJ oder 8,8 · 10⁴ J).
+            </div>
+        </div>
+
+        <!-- AUFGABE 2 -->
+        <div class="task">
+            <div class="task-title">Aufgabe 2: Ein Buch im Schullandheim</div>
+            <p>Ein Physikbuch der Masse <span class="math-expr">m</span> = 0,450 <span class="unit">kg</span> liegt im 2. Stock auf einem Regal in <span class="math-expr">h</span> = 6,5 <span class="unit">m</span> Höhe über dem Erdboden.</p>
+            <p>Berechne die potenzielle Energie bezüglich des Erdbodens mit der passenden Anzahl an geltenden Ziffern.</p>
+            
+            <label for="q2_val">Endergebnis <span class="math-expr">E</span><sub>pot</sub> in J (Joule):</label><br>
+            <input type="text" id="q2_val" placeholder="z.B. 29">
+            <button onclick="checkTask2Val()">Prüfen</button>
+            <div id="f2_val" class="feedback"></div>
+
+            <button class="hint-btn" onclick="toggleHint('h2')">Hinweis anzeigen</button>
+            <div id="h2" class="hint-text">
+                <span class="math-expr">m</span> = 0,450 <span class="unit">kg</span> hat 3 geltende Ziffern (die Endnull zählt!).<br>
+                <span class="math-expr">h</span> = 6,5 <span class="unit">m</span> hat 2 geltende Ziffern.<br>
+                TR-Wert: 0,450 · 9,81 · 6,5 = 28,69425 <span class="unit">J</span>. Runden auf 2 Ziffern!
+            </div>
+        </div>
+
+        <!-- AUFGABE 3 -->
+        <div class="task">
+            <div class="task-title">Aufgabe 3: Turmspringen im Freibad</div>
+            <p>Ein Wasserspringer hat bei einem Sprung vom 10,0 <span class="unit">m</span>-Turm eine potenzielle Energie von <span class="math-expr">E</span><sub>pot</sub> = 6,67 <span class="unit">kJ</span> (6670 <span class="unit">J</span>).</p>
+            <p>Berechne die Masse <span class="math-expr">m</span> des Springers (Formel umstellen!).</p>
+            
+            <label for="q3_val">Masse <span class="math-expr">m</span> in kg:</label><br>
+            <input type="text" id="q3_val" placeholder="z.B. 68,0">
+            <button onclick="checkTask3Val()">Prüfen</button>
+            <div id="f3_val" class="feedback"></div>
+
+            <button class="hint-btn" onclick="toggleHint('h3')">Hinweis anzeigen</button>
+            <div id="h3" class="hint-text">
+                Formel: <span class="math-expr">m</span> = <span class="math-expr">E</span><sub>pot</sub> / (<span class="math-expr">g</span> · <span class="math-expr">h</span>) = 6670 / (9,81 · 10,0).<br>
+                <span class="math-expr">E</span><sub>pot</sub> hat 3 Ziffern, <span class="math-expr">g</span> hat 3 Ziffern, <span class="math-expr">h</span> = 10,0 hat 3 Ziffern.<br>
+                Ergebnis auf 3 geltende Ziffern runden!
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function toggleHint(id) {
+        const el = document.getElementById(id);
+        if (el.style.display === "block") {
+            el.style.display = "none";
+        } else {
+            el.style.display = "block";
+        }
+    }
+
+    function checkDigits(inputId, feedbackId, expected, successMsg) {
+        const input = document.getElementById(inputId).value.trim();
+        const feedback = document.getElementById(feedbackId);
+        if (input === expected) {
+            feedback.className = 'feedback correct';
+            feedback.textContent = successMsg;
+        } else {
+            feedback.className = 'feedback incorrect';
+            feedback.textContent = 'Leider nicht richtig. Überprüfe noch einmal die Regeln aus der Merkbox!';
+        }
+    }
+
+    function checkTask1Digits() {
+        const input = document.getElementById('q1_digits').value.trim();
+        const feedback = document.getElementById('f1_digits');
+        if (input === '2') {
+            feedback.className = 'feedback correct';
+            feedback.textContent = 'Richtig! Der Engpass sind m = 75 kg (2 Ziffern) und h = 120 m (2 Ziffern).';
+        } else {
+            feedback.className = 'feedback incorrect';
+            feedback.textContent = 'Falsch. Schau dir m = 75 kg und h = 120 m genauer an. Welches ist der kleinste Wert?';
+        }
+    }
+
+    function checkTask1Val() {
+        const input = document.getElementById('q1_val').value.trim().replace(',', '.');
+        const feedback = document.getElementById('f1_val');
+        if (input === '88') {
+            feedback.className = 'feedback correct';
+            feedback.textContent = 'Ausgezeichnet! (TR-Wert 88,29 kJ gerundet auf 2 geltende Ziffern ergibt 88 kJ).';
+        } else if (input === '88.29' || input === '88290') {
+            feedback.className = 'feedback incorrect';
+            feedback.textContent = 'Der Rechenwert stimmt, aber du hast noch nicht auf die korrekte Anzahl geltender Ziffern gerundet!';
+        } else {
+            feedback.className = 'feedback incorrect';
+            feedback.textContent = 'Leider falsch. Überprüfe die Rechnung: 75 * 9.81 * 120 / 1000 = 88.29 kJ -> gerundet auf 2 Ziffern?';
+        }
+    }
+
+    function checkTask2Val() {
+        const input = document.getElementById('q2_val').value.trim().replace(',', '.');
+        const feedback = document.getElementById('f2_val');
+        if (input === '29') {
+            feedback.className = 'feedback correct';
+            feedback.textContent = 'Richtig! (TR: 28,694... J -> gerundet auf 2 geltende Ziffern wegen h = 6,5 m ergibt 29 J).';
+        } else if (input === '28.7' || input === '28.69') {
+            feedback.className = 'feedback incorrect';
+            feedback.textContent = 'Fast! Aber beachte, dass h = 6,5 m nur 2 geltende Ziffern hat. Du musst auf 2 Ziffern runden.';
+        } else {
+            feedback.className = 'feedback incorrect';
+            feedback.textContent = 'Versuche es noch einmal: E = 0.450 * 9.81 * 6.5.';
+        }
+    }
+
+    function checkTask3Val() {
+        const input = document.getElementById('q3_val').value.trim().replace(',', '.');
+        const feedback = document.getElementById('f3_val');
+        if (input === '68.0' || input === '68') {
+            feedback.className = 'feedback correct';
+            feedback.textContent = 'Sehr gut! TR-Wert ist 67,9918... kg. Auf 3 geltende Ziffern gerundet ergibt das 68,0 kg.';
+        } else {
+            feedback.className = 'feedback incorrect';
+            feedback.textContent = 'Nicht ganz. TR: 6670 / (9.81 * 10.0) = 67,9918... Rundest du das korrekt auf 3 Ziffern?';
+        }
+    }
+</script>
+
+</body>
+</html>
